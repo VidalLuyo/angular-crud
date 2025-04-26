@@ -1,4 +1,4 @@
-<div class="filters-container">
+<div class="flex justify-between p-4">
   <div class="filters">
     <!-- Filtro de búsqueda por nombre -->
     <input type="text" placeholder="Buscar producto" [(ngModel)]="nameFilter" class="filter-input">
@@ -24,11 +24,10 @@
 </div>
 
 
-
 <div class="w-full overflow-x-auto">
   <table mat-table [dataSource]="filteredDataSource">
 
-      <!-- Columnas de la tabla (Imagen, Nombre, Descripción, Moneda, Precio, Estado, Acciones) -->
+      <!-- Image Column -->
       <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
@@ -36,16 +35,19 @@
           </td>
       </ng-container>
 
+      <!-- Name Column -->
       <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Nombre </th>
           <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
+      <!-- Description Column -->
       <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef> Descripción </th>
           <td mat-cell *matCellDef="let element"> {{element.description}} </td>
       </ng-container>
 
+      <!-- Currency Column -->
       <ng-container matColumnDef="currency">
           <th mat-header-cell *matHeaderCellDef> Moneda </th>
           <td mat-cell *matCellDef="let element"> {{element.currencyCode}} </td>
@@ -58,7 +60,7 @@
 
       <ng-container matColumnDef="state">
           <th mat-header-cell *matHeaderCellDef> Estado </th>
-          <td mat-cell *matCellDef="let element"> {{element.state === 1 ? 'Activo' : 'Inactivo'}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.state}} </td>
       </ng-container>
 
       <ng-container matColumnDef="action">
