@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-home',
@@ -17,14 +18,20 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
+    FormsModule,
     MatInputModule
   ],
   templateUrl: './product-home.component.html',
-  styleUrl: './product-home.component.scss'
+  styleUrls: ['./product-home.component.scss']
 })
 export class ProductHomeComponent implements OnInit {
   columns: string[] = ['image', 'name', 'description', 'currency', 'price', 'state', 'action'];
-  dataSource: Product[] = [];
+  dataSource: Product[] = []; // Lista completa de productos
+  filteredDataSource: Product[] = []; // Lista de productos filtrados
+
+  nameFilter: string = ''; // Filtro por nombre
+  stateFilter: number | null = null; // Filtro por estado
+  currencyFilter: string = ''; // Filtro por moneda (Soles o Dólar)
 
   productService = inject(ProductService);
   private dialog = inject(MatDialog);
@@ -35,10 +42,21 @@ export class ProductHomeComponent implements OnInit {
   }
 
   getAll(): void {
-    this.productService.getAll().subscribe(res => {
+    // Llamar al servicio con los filtros aplicados
+    this.productService.getAll(this.nameFilter, this.stateFilter, this.currencyFilter).subscribe(res => {
       console.log('Api response:', res.data);
       this.dataSource = res.data;
-    })
+      this.applyFilters(); // Aplica los filtros a los datos
+    });
+  }
+
+  applyFilters(): void {
+    this.filteredDataSource = this.dataSource.filter(product => {
+      const matchesName = product.name.toLowerCase().includes(this.nameFilter.toLowerCase());
+      const matchesState = this.stateFilter !== null ? product.state === this.stateFilter : true;
+      const matchesCurrency = this.currencyFilter ? product.currencyCode === this.currencyFilter : true;
+      return matchesName && matchesState && matchesCurrency;
+    });
   }
 
   openProductDlg(product?: Product): void {
@@ -58,9 +76,8 @@ export class ProductHomeComponent implements OnInit {
     this.productService.inactive(id).subscribe(res => {
       if (res.status) {
         this.getAll();
-        this.snackbar.open('Se inactivo el producto', 'Aceptar');
+        this.snackbar.open('Se inactivó el producto', 'Aceptar');
       }
-    })
+    });
   }
-
 }

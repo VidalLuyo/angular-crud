@@ -1,0 +1,82 @@
+// Contenedor para los filtros y el botón de agregar
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+// Contenedor de los filtros
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+// Filtro de búsqueda por nombre
+.filter-input {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 200px;
+  transition: border-color 0.3s ease-in-out;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+}
+
+// Filtro de selección de moneda
+.filter-select {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 150px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease-in-out;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+}
+
+// Botón de aplicar filtros
+.filter-button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+// Estilo para el botón de nuevo producto
+.add-product-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #218838;
+  }
+
+  mat-icon {
+    margin-right: 0.5rem;
+  }
+}

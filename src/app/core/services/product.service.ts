@@ -10,9 +10,15 @@ import { environment } from '../../../environments/environment';
 export class ProductService {
   private http = inject(HttpClient);
 
-  getAll() {
-    return this.http.get<ApiResponse<Product[]>>(`${environment.api}/v1/products?active=true`);
+  getAll(name: string = '', state: number | null = null, currency: string = '') {
+    let params = `?active=true`;
+    if (name) params += `&name=${name}`;
+    if (state !== null) params += `&state=${state}`;
+    if (currency) params += `&currency=${currency}`;
+
+    return this.http.get<ApiResponse<Product[]>>(`${environment.api}/v1/products${params}`);
   }
+
 
   create(request: SaveProduct) {
     return this.http.post<ApiResponse<Product>>(`${environment.api}/v1/products`, request);

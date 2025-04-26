@@ -1,66 +1,74 @@
-<div class="flex justify-between p-4">
-    <div class="flex justify-center items-center">
-        <button type="button" mat-icon-button>
-            <mat-icon>filter_list</mat-icon>
-        </button>
+<div class="filters-container">
+  <div class="filters">
+    <!-- Filtro de búsqueda por nombre -->
+    <input type="text" placeholder="Buscar producto" [(ngModel)]="nameFilter" class="filter-input">
 
-        <input type="text" placeholder="Buscar producto" style="padding: 0.5rem;">
-    </div>
+    <!-- Filtro de búsqueda por moneda (Soles/Dólar) -->
+    <select [(ngModel)]="currencyFilter" class="filter-select">
+      <option value="">Seleccionar moneda</option>
+      <option value="PEN">Soles</option>
+      <option value="USD">Dólar</option>
+    </select>
 
-    <button type="button" mat-flat-button (click)="openProductDlg()">
-        <mat-icon>add</mat-icon>
-        Nuevo producto
+    <!-- Botón para aplicar filtros -->
+    <button type="button" mat-icon-button (click)="applyFilters()" class="filter-button">
+      <mat-icon>filter_list</mat-icon>
     </button>
+  </div>
+
+  <!-- Botón para agregar un nuevo producto -->
+  <button type="button" mat-flat-button (click)="openProductDlg()" class="add-product-btn">
+    <mat-icon>add</mat-icon>
+    Nuevo producto
+  </button>
 </div>
 
+
+
 <div class="w-full overflow-x-auto">
-    <table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="filteredDataSource">
 
-        <!-- Image Column -->
-        <ng-container matColumnDef="image">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
-                <img [src]="element.imageUrl" alt="Product image" height="32" width="32">
-            </td>
-        </ng-container>
+      <!-- Columnas de la tabla (Imagen, Nombre, Descripción, Moneda, Precio, Estado, Acciones) -->
+      <ng-container matColumnDef="image">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+              <img [src]="element.imageUrl" alt="Product image" height="32" width="32">
+          </td>
+      </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Nombre </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
+      <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
 
-        <!-- Description Column -->
-        <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef> Descripción </th>
-            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-        </ng-container>
+      <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Descripción </th>
+          <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
 
-        <!-- Currency Column -->
-        <ng-container matColumnDef="currency">
-            <th mat-header-cell *matHeaderCellDef> Moneda </th>
-            <td mat-cell *matCellDef="let element"> {{element.currencyCode}} </td>
-        </ng-container>
+      <ng-container matColumnDef="currency">
+          <th mat-header-cell *matHeaderCellDef> Moneda </th>
+          <td mat-cell *matCellDef="let element"> {{element.currencyCode}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="price">
-            <th mat-header-cell *matHeaderCellDef> Precio </th>
-            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
-        </ng-container>
+      <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef> Precio </th>
+          <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="state">
-            <th mat-header-cell *matHeaderCellDef> Estado </th>
-            <td mat-cell *matCellDef="let element"> {{element.state}} </td>
-        </ng-container>
+      <ng-container matColumnDef="state">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.state === 1 ? 'Activo' : 'Inactivo'}} </td>
+      </ng-container>
 
-        <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef> Acciones </th>
-            <td mat-cell *matCellDef="let element">
-                <button type="button" mat-button class="delete-button"
-                    (click)="inactiveProduct(element.id)">Eliminar</button>
-            </td>
-        </ng-container>
+      <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let element">
+              <button type="button" mat-button class="delete-button" (click)="inactiveProduct(element.id)">Eliminar</button>
+          </td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns;" (dblclick)="openProductDlg(row)"></tr>
-    </table>
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns;" (dblclick)="openProductDlg(row)"></tr>
+  </table>
 </div>
